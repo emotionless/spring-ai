@@ -1,5 +1,6 @@
 package com.eazybytes.openai.controller;
 
+import com.eazybytes.openai.advisors.TokenUsageAuditAdvisor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
