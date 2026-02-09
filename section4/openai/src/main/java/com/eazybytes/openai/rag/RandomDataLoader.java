@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import static com.eazybytes.openai.rag.BasicCodeChunker.chunkSource;
 
-@Component
+//@Component
 public class RandomDataLoader {
 
     private final VectorStore vectorStore;
