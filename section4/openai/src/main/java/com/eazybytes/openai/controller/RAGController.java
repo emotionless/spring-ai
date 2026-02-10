@@ -25,6 +25,10 @@ public class RAGController {
     @Value("classpath:/promptTemplates/systemPromptRandomDataTemplate.st")
     Resource promptTemplate;
 
+    @Value("classpath:/promptTemplates/systemPromptTemplateEInvoice.st")
+    Resource einvoicePromptTemplate;
+
+
     public RAGController(@Qualifier("chatMemoryChatClient") ChatClient chatClient, VectorStore vectorStore) {
         this.chatClient = chatClient;
         this.vectorStore = vectorStore;
@@ -32,14 +36,33 @@ public class RAGController {
 
     @GetMapping("/random/chat")
     public ResponseEntity<String> randomChat(@RequestHeader("username") String username, @RequestParam("message") String message) {
-        SearchRequest searchRequest = SearchRequest.builder().query(message).topK(5).similarityThreshold(0.5).build();
-        List<Document> similarDocs = vectorStore.similaritySearch(searchRequest);
-        String similarContext = similarDocs.stream()
-                .map(Document::getText)
-                .collect(Collectors.joining(System.lineSeparator()));
-        String answer = chatClient.prompt().system(
-                promptSystemSpec -> promptSystemSpec.text(promptTemplate)
-                        .param("documents", similarContext))
+//        SearchRequest searchRequest = SearchRequest.builder().query(message).topK(5).similarityThreshold(0.5).build();
+//        List<Document> similarDocs = vectorStore.similaritySearch(searchRequest);
+//        String similarContext = similarDocs.stream()
+//                .map(Document::getText)
+//                .collect(Collectors.joining(System.lineSeparator()));
+        String answer = chatClient.prompt()
+//                .system(
+//                promptSystemSpec -> promptSystemSpec.text(promptTemplate)
+//                        .param("documents", similarContext))
+                .advisors(a -> a.param(CONVERSATION_ID, username))
+                .user(message)
+                .call()
+                .content();
+        return ResponseEntity.ok(answer);
+    }
+
+    @GetMapping("/document/chat")
+    public ResponseEntity<String> documentChat(@RequestHeader("username") String username, @RequestParam("message") String message) {
+//        SearchRequest searchRequest = SearchRequest.builder().query(message).topK(5).similarityThreshold(0.5).build();
+//        List<Document> similarDocs = vectorStore.similaritySearch(searchRequest);
+//        String similarContext = similarDocs.stream()
+//                .map(Document::getText)
+//                .collect(Collectors.joining(System.lineSeparator()));
+        String answer = chatClient.prompt()
+//                .system(
+//                        promptSystemSpec -> promptSystemSpec.text(einvoicePromptTemplate)
+//                                .param("documents", similarContext))
                 .advisors(a -> a.param(CONVERSATION_ID, username))
                 .user(message)
                 .call()
