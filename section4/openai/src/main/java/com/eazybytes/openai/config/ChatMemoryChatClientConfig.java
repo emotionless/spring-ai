@@ -1,6 +1,7 @@
 package com.eazybytes.openai.config;
 
 import com.eazybytes.openai.advisors.TokenUsageAuditAdvisor;
+import com.eazybytes.openai.rag.PIIMaskingDocumentPostProcessor;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
@@ -47,6 +48,7 @@ public class ChatMemoryChatClientConfig {
                 .queryTransformers(TranslationQueryTransformer.builder().chatClientBuilder(chatClientBuilder.clone())
                         .targetLanguage("english").build())
                 .documentRetriever(vectorStoreDocumentRetriever)
+                .documentPostProcessors(PIIMaskingDocumentPostProcessor.builder())
                 .build();
     }
 }
