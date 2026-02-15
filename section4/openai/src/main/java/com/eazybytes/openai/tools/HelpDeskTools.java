@@ -23,7 +23,7 @@ public class HelpDeskTools {
 
     private final HelpDeskTicketService helpDeskTicketService;
 
-    @Tool(name = "createTicket", description = "Create the Support Ticket")
+    @Tool(name = "createTicket", description = "Create the Support Ticket", returnDirect = true)
     String createTicket(@ToolParam(description = "Details to create a Support ticket") TicketRequest ticketRequest, ToolContext toolContext) {
         String username = (String) toolContext.getContext().get("username");
         HelpDeskTicket ticket = helpDeskTicketService.createTicket(ticketRequest, username);
@@ -33,6 +33,7 @@ public class HelpDeskTools {
     @Tool(name = "getTickets", description = "Get the list of tickets for the user")
     List<HelpDeskTicket> getTickets(ToolContext toolContext) {
         String username = (String) toolContext.getContext().get("username");
+//        throw new RuntimeException("Unable to fetch ticket status");
         return helpDeskTicketService.getTickets(username);
     }
 }
