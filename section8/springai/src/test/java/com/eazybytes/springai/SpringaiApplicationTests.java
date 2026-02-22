@@ -38,7 +38,6 @@ class SpringaiApplicationTests {
 	@Autowired
 	private ChatModel chatModel;
 
-	private ChatClient chatClient;
 	private RelevancyEvaluator relevancyEvaluator;
 	private FactCheckingEvaluator factCheckingEvaluator;
 
@@ -53,7 +52,7 @@ class SpringaiApplicationTests {
 	void setup() {
 		ChatClient.Builder chatClientBuilder =
 				ChatClient.builder(chatModel).defaultAdvisors(new SimpleLoggerAdvisor());
-		this.chatClient = chatClientBuilder.build();
+
 		this.relevancyEvaluator = new RelevancyEvaluator(chatClientBuilder);
 		this.factCheckingEvaluator = FactCheckingEvaluator.builder(chatClientBuilder).build();
 	}
