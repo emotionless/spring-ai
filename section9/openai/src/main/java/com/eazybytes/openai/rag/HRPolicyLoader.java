@@ -20,7 +20,7 @@ public class HRPolicyLoader {
 
     private final VectorStore vectorStore;
 
-    @Value("classpath:guideline.pdf")
+    @Value("classpath:Eazybytes_HR_Policies.pdf")
     Resource policyDocument;
 
     public HRPolicyLoader(VectorStore vectorStore) {
@@ -31,7 +31,7 @@ public class HRPolicyLoader {
     public void loadPDF() {
         TikaDocumentReader tikaDocumentReader = new TikaDocumentReader(policyDocument);
         List<Document> documents = tikaDocumentReader.get();
-        TextSplitter textSplitter = TokenTextSplitter.builder().withChunkSize(100).build();
+        TextSplitter textSplitter = TokenTextSplitter.builder().withChunkSize(200).build();
         vectorStore.add(textSplitter.split(documents));
     }
 }
