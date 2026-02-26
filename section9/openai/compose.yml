@@ -24,6 +24,16 @@ services:
     networks:
       - spring-ai
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - '16686:16686'
+      - '4317:4317'
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - spring-ai
+
 networks:
   spring-ai:
     driver: bridge
